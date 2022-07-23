@@ -246,20 +246,20 @@ function initMap() {
 	var localLang = getLocalLanguage();
 
 	var city = L.OWM.current({
-		intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 5,
+		intervall: 15, imageLoadingUrl: 'site/leaflet/owmloading.gif', lang: localLang, minZoom: 5,
 		appId: OWM_API_KEY
 	});
 	var windrose = L.OWM.current({
-		intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 4,
+		intervall: 15, imageLoadingUrl: 'site/leaflet/owmloading.gif', lang: localLang, minZoom: 4,
 		appId: OWM_API_KEY, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,
 		imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png'
 	});
 	windrose.on('owmlayeradd', windroseAdded, windrose); // Add an event listener to get informed when windrose layer is ready
 
 	var useGeolocation = true;
-	var zoom = 6;
-	var lat = 51.58;
-	var lon = 10.1;
+	var zoom = 5;
+	var lat = 37.09;
+	var lon = -95.71;
 	var urlParams = getUrlParameters();
 	if (typeof urlParams.zoom != "undefined" && typeof urlParams.lat != "undefined" && typeof urlParams.lon != "undefined") {
 		zoom = urlParams.zoom;
@@ -336,7 +336,7 @@ function initMap() {
 	patch.innerHTML = getI18n('prefs', localLang); // 'Preferences';
 	layerControl._form.children[0].parentNode.insertBefore(patch, null);
 	patch = L.DomUtil.create('div', '');
-	patch.innerHTML = '<div id="wheeldiv" onClick="toggleWheel(\'' + localLang + '\')"><img id="wheelimg" src="files/ScrollWheel20.png" align="middle" > <span id="wheeltxt">' + getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang) + '</span></div>';
+	patch.innerHTML = '<div id="wheeldiv" onClick="toggleWheel(\'' + localLang + '\')"><img id="wheelimg" src="site/files/ScrollWheel20.png" align="middle" > <span id="wheeltxt">' + getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang) + '</span></div>';
 	layerControl._form.children[0].parentNode.insertBefore(patch, null);
 
 	if (useGeolocation && typeof navigator.geolocation != "undefined") {
@@ -347,4 +347,30 @@ function initMap() {
 		var latlng = e.latlng;
 		console.log(latlng)
 	});
+
+// 	var aqiurl = 'https://www.airnowapi.org/';
+
+// 	var aqi_current_url  = 'aq/observation/latLong/current/?format=application/json';
+	
+// 	var aqilat = '&latitude=' + latclick ;
+// 	var aqilong = '&longitude=' + lonclick ;
+// 	var aqidist = '&distance=25';
+// 	var aqi_key = '&API_KEY=C039AA9D-04F5-4025-8A80-7C5C6792AA34';
+
+
+// 	var aqiapiurl = aqiurl + aqi_current_url + aqilat + aqilong + aqidist + aqi_key;
+
+// 	d3.json(aqiapiurl).then(function(response) {
+
+//   console.log(response);
+
+//   for (var i = 0; i < response.length; i++) {
+//     var location = response[i].location;
+
+//     if (location) {
+//       L.marker([location.coordinates[1], location.coordinates[0]]).addTo(myMap);
+//     }
+//   }
+
+});
 }

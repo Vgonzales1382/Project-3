@@ -2044,6 +2044,15 @@ progress {
     }
 }
 
+table {
+    display: table;
+    border-collapse: separate;
+    box-sizing: border-box;
+    text-indent: initial;
+    border-spacing: 2px;
+    border-color:dimgray;
+}
+
 .table {
     --bs-table-color: var(--bs-body-color);
     --bs-table-bg: transparent;
