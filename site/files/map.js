@@ -1,20 +1,5 @@
-/**
- * This file is licensed under Creative Commons Zero (CC0)
- * https://creativecommons.org/publicdomain/zero/1.0/
- *
- * Author: https://www.openstreetmap.org/user/Zartbitter
- */
-
 var map;
 
-/**
- * Add or replace a parameter (with value) in the given URL.
- * By Adil Malik, https://stackoverflow.com/questions/1090948/change-url-parameters/10997390#10997390
- * @param String url the URL
- * @param String param the parameter
- * @param String paramVal the value of the parameter
- * @return String the changed URL
- */
 function updateURLParameter(url, param, paramVal) {
 	var theAnchor = null;
 	var newAdditionalURL = "";
@@ -27,29 +12,29 @@ function updateURLParameter(url, param, paramVal) {
 		var tmpAnchor = additionalURL.split("#");
 		var theParams = tmpAnchor[0];
 		theAnchor = tmpAnchor[1];
-		if(theAnchor) {
+		if (theAnchor) {
 			additionalURL = theParams;
 		}
 
 		tempArray = additionalURL.split("&");
 
-		for (i=0; i<tempArray.length; i++) {
-			if(tempArray[i].split('=')[0] != param) {
+		for (i = 0; i < tempArray.length; i++) {
+			if (tempArray[i].split('=')[0] != param) {
 				newAdditionalURL += temp + tempArray[i];
 				temp = "&";
 			}
-		}        
+		}
 	} else {
 		var tmpAnchor = baseURL.split("#");
 		var theParams = tmpAnchor[0];
-		theAnchor  = tmpAnchor[1];
+		theAnchor = tmpAnchor[1];
 
-		if(theParams) {
+		if (theParams) {
 			baseURL = theParams;
 		}
 	}
 
-	if(theAnchor) {
+	if (theAnchor) {
 		paramVal += "#" + theAnchor;
 	}
 
@@ -72,7 +57,7 @@ function changeLanguage(pLang) {
 function getUrlParameters() {
 	var vars = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-	for(var i=0; i<hashes.length; i++) {
+	for (var i = 0; i < hashes.length; i++) {
 		hash = hashes[i].split('=');
 		vars.push(hash[0]);
 		vars[hash[0]] = hash[1];
@@ -92,14 +77,16 @@ function foundLocation(position) {
 	}
 }
 
+
+
 /**
  * Example function to replace leaflet-openweathermap's builtin marker by a wind rose symbol.
  * Some helper functions and an event listener are needed, too. See below.
  */
 function myWindroseMarker(data) {
 	var content = '<canvas id="id_' + data.id + '" width="50" height="50"></canvas>';
-	var icon = L.divIcon({html: content, iconSize: [50,50], className: 'owm-div-windrose'});
-	return L.marker([data.coord.Lat, data.coord.Lon], {icon: icon, clickable: false});
+	var icon = L.divIcon({ html: content, iconSize: [50, 50], className: 'owm-div-windrose' });
+	return L.marker([data.coord.Lat, data.coord.Lon], { icon: icon, clickable: false });
 }
 
 /**
@@ -121,7 +108,7 @@ function myWindroseDrawCanvas(data, owm) {
 		}
 		if (typeof data.wind.deg != 'undefined') {
 			//canvas.title += ', ' + data.wind.deg + '°';
-			canvas.title += ', ' + owm._directions[(data.wind.deg/22.5).toFixed(0)];
+			canvas.title += ', ' + owm._directions[(data.wind.deg / 22.5).toFixed(0)];
 			angle = data.wind.deg;
 		}
 		if (typeof data.wind.gust != 'undefined') {
@@ -132,15 +119,15 @@ function myWindroseDrawCanvas(data, owm) {
 		var red = 0;
 		var green = 0;
 		if (speed <= 10) {
-			green = 10*speed+155;
-			red = 255*speed/10.0;
+			green = 10 * speed + 155;
+			red = 255 * speed / 10.0;
 		} else {
 			red = 255;
-			green = 255-(255*(Math.min(speed, 21)-10)/11.0);
+			green = 255 - (255 * (Math.min(speed, 21) - 10) / 11.0);
 		}
 		var ctx = canvas.getContext('2d');
 		ctx.translate(25, 25);
-		ctx.rotate(angle*Math.PI/180);
+		ctx.rotate(angle * Math.PI / 180);
 		ctx.fillStyle = 'rgb(' + Math.floor(red) + ',' + Math.floor(green) + ',' + 0 + ')';
 		ctx.beginPath();
 		ctx.moveTo(-15, -25);
@@ -152,11 +139,11 @@ function myWindroseDrawCanvas(data, owm) {
 		// draw inner arrow for gust
 		if (gust > 0 && gust != speed) {
 			if (gust <= 10) {
-				green = 10*gust+155;
-				red = 255*gust/10.0;
+				green = 10 * gust + 155;
+				red = 255 * gust / 10.0;
 			} else {
 				red = 255;
-				green = 255-(255*(Math.min(gust, 21)-10)/11.0);
+				green = 255 - (255 * (Math.min(gust, 21) - 10) / 11.0);
 			}
 			canvas.title += ', gust ' + data.wind.gust + ' m/s';
 			canvas.title += ', ' + owm._windMsToBft(data.wind.gust) + ' BFT';
@@ -170,8 +157,8 @@ function myWindroseDrawCanvas(data, owm) {
 		}
 	} else {
 		canvas.innerHTML = '<div>'
-				+ (typeof data.wind != 'undefined' && typeof data.wind.deg != 'undefined' ? data.wind.deg + '°' : '')
-				+ '</div>';
+			+ (typeof data.wind != 'undefined' && typeof data.wind.deg != 'undefined' ? data.wind.deg + '°' : '')
+			+ '</div>';
 	}
 }
 
@@ -215,11 +202,11 @@ function myOwmPopup(data) {
 function toggleWheel(localLang) {
 	if (map.scrollWheelZoom._enabled) {
 		map.scrollWheelZoom.disable();
-		document.getElementById('wheelimg').src = 'files/ScrollWheelDisabled20.png';
+		document.getElementById('wheelimg').src = 'site/files/ScrollWheelDisabled20.png';
 		document.getElementById('wheeltxt').innerHTML = getI18n('scrollwheel', localLang) + ' ' + getI18n('off', localLang);
 	} else {
 		map.scrollWheelZoom.enable();
-		document.getElementById('wheelimg').src = 'files/ScrollWheel20.png';
+		document.getElementById('wheelimg').src = 'site/files/ScrollWheel20.png';
 		document.getElementById('wheeltxt').innerHTML = getI18n('scrollwheel', localLang) + ' ' + getI18n('on', localLang);
 	}
 }
@@ -232,40 +219,41 @@ function initMap() {
 	var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		maxZoom: 19,
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</a>'
-		});
-
-	var humanitarian = L.tileLayer('https://tile-{s}.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
-		maxZoom: 17,
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors</a> <a href="https://www.hotosm.org/" target="_blank">Tiles courtesy of Humanitarian OpenStreetMap Team</a>'
-		});
-
-	var esri = L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}.jpg", {
-		maxZoom: 19, attribution: 'Tiles © Esri — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
 	});
 
-	// Get your own free OWM API key at https://www.openweathermap.org/appid - please do not re-use mine!
-	// You don't need an API key for this to work at the moment, but this will change eventually.
-	var OWM_API_KEY = '06aac0fd4ba239a20d824ef89602f311';
+	var topographic = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+		attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+	});
 
-	var clouds = L.OWM.clouds({opacity: 0.8, legendImagePath: 'files/NT2.png', appId: OWM_API_KEY});
-	var cloudscls = L.OWM.cloudsClassic({opacity: 0.5, appId: OWM_API_KEY});
-	var precipitation = L.OWM.precipitation( {opacity: 0.5, appId: OWM_API_KEY} );
-	var precipitationcls = L.OWM.precipitationClassic({opacity: 0.5, appId: OWM_API_KEY});
-	var rain = L.OWM.rain({opacity: 0.5, appId: OWM_API_KEY});
-	var raincls = L.OWM.rainClassic({opacity: 0.5, appId: OWM_API_KEY});
-	var snow = L.OWM.snow({opacity: 0.5, appId: OWM_API_KEY});
-	var pressure = L.OWM.pressure({opacity: 0.4, appId: OWM_API_KEY});
-	var pressurecntr = L.OWM.pressureContour({opacity: 0.5, appId: OWM_API_KEY});
-	var temp = L.OWM.temperature({opacity: 0.5, appId: OWM_API_KEY});
-	var wind = L.OWM.wind({opacity: 0.5, appId: OWM_API_KEY});
+	var aqicn = L.tileLayer('https://tiles.waqi.info/tiles/usepa-aqi/{z}/{x}/{y}.png?token=_TOKEN_ID_', {
+		attribution: 'Air  Quality  Tiles  &copy;  <a  href="http://waqi.info">waqi.info</a>'
+	});
+
+	var OWM_API_KEY = 'c64818b9da20a4abe316608ce03cdaa7';
+
+	var clouds = L.OWM.clouds({ opacity: 0.8, legendImagePath: 'files/NT2.png', appId: OWM_API_KEY });
+	var cloudscls = L.OWM.cloudsClassic({ opacity: 0.5, appId: OWM_API_KEY });
+	var precipitation = L.OWM.precipitation({ opacity: 0.5, appId: OWM_API_KEY });
+	var precipitationcls = L.OWM.precipitationClassic({ opacity: 0.5, appId: OWM_API_KEY });
+	var rain = L.OWM.rain({ opacity: 0.5, appId: OWM_API_KEY });
+	var raincls = L.OWM.rainClassic({ opacity: 0.5, appId: OWM_API_KEY });
+	var snow = L.OWM.snow({ opacity: 0.5, appId: OWM_API_KEY });
+	var pressure = L.OWM.pressure({ opacity: 0.4, appId: OWM_API_KEY });
+	var pressurecntr = L.OWM.pressureContour({ opacity: 0.5, appId: OWM_API_KEY });
+	var temp = L.OWM.temperature({ opacity: 0.5, appId: OWM_API_KEY });
+	var wind = L.OWM.wind({ opacity: 0.5, appId: OWM_API_KEY });
 
 	var localLang = getLocalLanguage();
 
-	var city = L.OWM.current({intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 5,
-			appId: OWM_API_KEY});
-	var windrose = L.OWM.current({intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 4,
-			appId: OWM_API_KEY, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,
-   			imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png' });
+	var city = L.OWM.current({
+		intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 5,
+		appId: OWM_API_KEY
+	});
+	var windrose = L.OWM.current({
+		intervall: 15, imageLoadingUrl: 'leaflet/owmloading.gif', lang: localLang, minZoom: 4,
+		appId: OWM_API_KEY, markerFunction: myWindroseMarker, popup: false, clusterSize: 50,
+		imageLoadingBgUrl: 'https://openweathermap.org/img/w0/iwind.png'
+	});
 	windrose.on('owmlayeradd', windroseAdded, windrose); // Add an event listener to get informed when windrose layer is ready
 
 	var useGeolocation = true;
@@ -282,41 +270,42 @@ function initMap() {
 
 	map = L.map('map', {
 		center: new L.LatLng(lat, lon), zoom: zoom,
-		layers: [standard]
+		layers: [standard, aqicn]
+
 	});
 	map.attributionControl.setPrefix("");
 
-	map.addControl(L.languageSelector({
-		languages: new Array(
-			L.langObject('en', 'English', 'mapicons/en.png')
-		,	L.langObject('de', 'Deutsch', 'mapicons/de.png')
-		,	L.langObject('fr', 'Français', 'mapicons/fr.png')
-		,	L.langObject('it', 'Italiano', 'mapicons/it.png')
-		,	L.langObject('es', 'Español', 'mapicons/es.png')
-		,	L.langObject('ca', 'Català', 'mapicons/catalonia.png')
-		,	L.langObject('ru', 'Русский', 'mapicons/ru.png')
-		,	L.langObject('nl', 'Nederlands', 'mapicons/nl.png')
-		,	L.langObject('pt_br', 'Português do Brasil', 'mapicons/br.png')
-		),
-		callback: changeLanguage,
-		initialLanguage: localLang,
-		hideSelected: false,
-		vertical: false
-	}));
+	// map.addControl(L.languageSelector({
+	// 	languages: new Array(
+	// 		L.langObject('en', 'English', 'mapicons/en.png')
+	// 	,	L.langObject('de', 'Deutsch', 'mapicons/de.png')
+	// 	,	L.langObject('fr', 'Français', 'mapicons/fr.png')
+	// 	,	L.langObject('it', 'Italiano', 'mapicons/it.png')
+	// 	,	L.langObject('es', 'Español', 'mapicons/es.png')
+	// 	,	L.langObject('ca', 'Català', 'mapicons/catalonia.png')
+	// 	,	L.langObject('ru', 'Русский', 'mapicons/ru.png')
+	// 	,	L.langObject('nl', 'Nederlands', 'mapicons/nl.png')
+	// 	,	L.langObject('pt_br', 'Português do Brasil', 'mapicons/br.png')
+	// 	),
+	// 	callback: changeLanguage,
+	// 	initialLanguage: localLang,
+	// 	hideSelected: false,
+	// 	vertical: false
+	// }));
 
 	var baseMaps = {
-		"OSM Standard": standard
-		, "OSM Humanitarian": humanitarian
-	//	, "ESRI Aerial": esri
+		"Street View": standard,
+		"Topographic View": topographic
 	};
 
-	var overlayMaps = {};
+	var overlayMaps = { "Air Quality": aqicn, };
+
 	overlayMaps[getI18n('clouds', localLang)] = clouds;
-	overlayMaps[getI18n('cloudscls', localLang)] = cloudscls;
+	// overlayMaps[getI18n('cloudscls', localLang)] = cloudscls;
 	overlayMaps[getI18n('precipitation', localLang)] = precipitation;
-	overlayMaps[getI18n('precipitationcls', localLang)] = precipitationcls;
+	// overlayMaps[getI18n('precipitationcls', localLang)] = precipitationcls;
 	overlayMaps[getI18n('rain', localLang)] = rain;
-	overlayMaps[getI18n('raincls', localLang)] = raincls;
+	// overlayMaps[getI18n('raincls', localLang)] = raincls;
 	overlayMaps[getI18n('snow', localLang)] = snow;
 	overlayMaps[getI18n('temp', localLang)] = temp;
 	overlayMaps[getI18n('windspeed', localLang)] = wind;
@@ -325,18 +314,18 @@ function initMap() {
 	overlayMaps[getI18n('city', localLang) + " (min Zoom 5)"] = city;
 	overlayMaps[getI18n('windrose', localLang)] = windrose;
 
-	var layerControl = L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
-	map.addControl(new L.Control.Permalink({layers: layerControl, useAnchor: false, position: 'bottomright'}));
+	var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
+	map.addControl(new L.Control.Permalink({ layers: layerControl, useAnchor: false, position: 'bottomright' }));
 
 	// patch layerControl to add some titles
 	var patch = L.DomUtil.create('div', 'owm-layercontrol-header');
 	patch.innerHTML = getI18n('layers', localLang); // 'TileLayers';
 	layerControl._form.children[2].parentNode.insertBefore(patch, layerControl._form.children[2]);
 	patch = L.DomUtil.create('div', 'leaflet-control-layers-separator');
-	layerControl._form.children[3].children[0].parentNode.insertBefore(patch, layerControl._form.children[3].children[layerControl._form.children[3].children.length-2]);
+	layerControl._form.children[3].children[0].parentNode.insertBefore(patch, layerControl._form.children[3].children[layerControl._form.children[3].children.length - 2]);
 	patch = L.DomUtil.create('div', 'owm-layercontrol-header');
 	patch.innerHTML = getI18n('current', localLang); // 'Current Weather';
-	layerControl._form.children[3].children[0].parentNode.insertBefore(patch, layerControl._form.children[3].children[layerControl._form.children[3].children.length-2]);
+	layerControl._form.children[3].children[0].parentNode.insertBefore(patch, layerControl._form.children[3].children[layerControl._form.children[3].children.length - 2]);
 	patch = L.DomUtil.create('div', 'owm-layercontrol-header');
 	patch.innerHTML = getI18n('maps', localLang); // 'Maps';
 	layerControl._form.children[0].parentNode.insertBefore(patch, layerControl._form.children[0]);
@@ -353,4 +342,9 @@ function initMap() {
 	if (useGeolocation && typeof navigator.geolocation != "undefined") {
 		navigator.geolocation.getCurrentPosition(foundLocation);
 	}
+
+	map.on('click', function (e) {
+		var latlng = e.latlng;
+		console.log(latlng)
+	});
 }
