@@ -343,34 +343,40 @@ function initMap() {
 		navigator.geolocation.getCurrentPosition(foundLocation);
 	}
 
+	var aqiurl = 'https://www.airnowapi.org/';
+	var aqi_current_url = 'aq/observation/latLong/current/?format=application/json';
+	var aqidist = '&distance=25';
+	var aqi_key = '&API_KEY=C039AA9D-04F5-4025-8A80-7C5C6792AA34';
+
+	var forecastbaseurl = 'https://api.openweathermap.org/data/2.5/forecast'
+	var owm_url_key = '&appid=' + OWM_API_KEY
+
 	map.on('click', function (e) {
 		var latlng = e.latlng;
 		console.log(latlng)
+
+		var latclick = latlng.lat;
+		var lonclick = latlng.lng;
+
+		var aqilat = '&latitude=' + latclick;
+		var aqilong = '&longitude=' + lonclick;
+		var forelat = '?lat=' + latclick
+		var forelong = '&lon=' + lonclick
+
+		var aqiapiurl = aqiurl + aqi_current_url + aqilat + aqilong + aqidist + aqi_key;
+		var forecasturl = forecastbaseurl + forelat + forelong + owm_url_key
+
+		d3.json(aqiapiurl).then(function (response) {
+
+			console.log(response);
+	
+		});
+
+		d3.json(forecasturl).then(function (response) {
+
+			console.log(response);
+	
+		});
 	});
 
-// 	var aqiurl = 'https://www.airnowapi.org/';
-
-// 	var aqi_current_url  = 'aq/observation/latLong/current/?format=application/json';
-	
-// 	var aqilat = '&latitude=' + latclick ;
-// 	var aqilong = '&longitude=' + lonclick ;
-// 	var aqidist = '&distance=25';
-// 	var aqi_key = '&API_KEY=C039AA9D-04F5-4025-8A80-7C5C6792AA34';
-
-
-// 	var aqiapiurl = aqiurl + aqi_current_url + aqilat + aqilong + aqidist + aqi_key;
-
-// 	d3.json(aqiapiurl).then(function(response) {
-
-//   console.log(response);
-
-//   for (var i = 0; i < response.length; i++) {
-//     var location = response[i].location;
-
-//     if (location) {
-//       L.marker([location.coordinates[1], location.coordinates[0]]).addTo(myMap);
-//     }
-//   }
-
-// });
 }
