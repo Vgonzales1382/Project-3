@@ -1,0 +1,15 @@
+{
+    
+     "main": 
+     {
+     "temp": 305.65, 
+     "feels_like": 309.27, 
+     "temp_min": 305.38, 
+     "temp_max": 306.33, 
+     "pressure": 1013, 
+     "humidity": 53, 
+     "sea_level": 1013, 
+     "grnd_level": 1001
+    }
+   
+}
