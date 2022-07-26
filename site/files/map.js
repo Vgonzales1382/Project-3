@@ -348,7 +348,7 @@ function initMap() {
 	var aqidist = '&distance=25';
 	var aqi_key = '&API_KEY=C039AA9D-04F5-4025-8A80-7C5C6792AA34';
 
-	var forecastbaseurl = 'https://api.openweathermap.org/data/2.5/forecast'
+	var weatherbaseurl = 'https://api.openweathermap.org/data/2.5/weather'
 	var owm_url_key = '&appid=' + OWM_API_KEY
 
 	map.on('click', function (e) {
@@ -360,23 +360,33 @@ function initMap() {
 
 		var aqilat = '&latitude=' + latclick;
 		var aqilong = '&longitude=' + lonclick;
-		var forelat = '?lat=' + latclick
-		var forelong = '&lon=' + lonclick
+		var weathlat = '?lat=' + latclick
+		var weatherlong = '&lon=' + lonclick
 
 		var aqiapiurl = aqiurl + aqi_current_url + aqilat + aqilong + aqidist + aqi_key;
-		var forecasturl = forecastbaseurl + forelat + forelong + owm_url_key
+		var weatherurl = weatherbaseurl + weathlat + weatherlong + owm_url_key
 
 		d3.json(aqiapiurl).then(function (response) {
 
 			console.log(response);
-	
+			aqiarray.unshift(response[0].AQI);
+			cityarray.unshift(response[0].ReportingArea);
+			statearray.unshift(response[0].StateCode);
+			console.log(cityarray)
+
 		});
 
-		d3.json(forecasturl).then(function (response) {
+
+
+		d3.json(weatherurl).then(function (response) {
 
 			console.log(response);
-	
+
 		});
+
+		latarray.unshift(latclick);
+		lonarray.unshift(lonclick);
+
 	});
 
 }
