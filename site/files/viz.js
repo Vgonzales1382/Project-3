@@ -1,6 +1,6 @@
 var options = {
     chart: {
-        height: 350,
+        height: 250,
         type: 'bar',
     },
     dataLabels: {
@@ -42,7 +42,7 @@ var options = {
     title: {
         text: "Air Quality Index in Selected Cities",
         floating: 0,
-        offsetY: 320,
+        offsetY: 330,
         align: "center",
         style: {
             color: "#444"
@@ -73,3 +73,31 @@ var chart = new ApexCharts(
 );
 
 chart.render();
+
+var options = {
+    series: [44, 55, 13, 43, 22],
+      chart: {
+        type: "donut"
+      },
+      labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+
+var donut = new ApexCharts(
+    document.querySelector("#donut"),
+    options
+);
+
+donut.render();
