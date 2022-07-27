@@ -1,3 +1,5 @@
+
+
 var options = {
     chart: {
         height: 350,
@@ -73,3 +75,6 @@ var chart = new ApexCharts(
 );
 
 chart.render();
+
+
+    
