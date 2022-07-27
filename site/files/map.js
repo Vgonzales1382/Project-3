@@ -42,18 +42,6 @@ function updateURLParameter(url, param, paramVal) {
 	return baseURL + "?" + newAdditionalURL + rows_txt;
 }
 
-/**
- * Add or replace the language parameter of the URL and reload the page.
- * @param String id of the language
- */
-function changeLanguage(pLang) {
-	window.location.href = updateURLParameter(window.location.href, 'lang', pLang);
-}
-
-/**
- * Get all parameters out of the URL.
- * @return Array List of URL parameters key-value indexed
- */
 function getUrlParameters() {
 	var vars = [], hash;
 	var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
@@ -65,10 +53,6 @@ function getUrlParameters() {
 	return vars;
 }
 
-/**
- * Callback for successful geolocation.
- * @var position Geolocated position
- */
 function foundLocation(position) {
 	if (typeof map != "undefined") {
 		var lat = position.coords.latitude;
@@ -77,22 +61,12 @@ function foundLocation(position) {
 	}
 }
 
-
-
-/**
- * Example function to replace leaflet-openweathermap's builtin marker by a wind rose symbol.
- * Some helper functions and an event listener are needed, too. See below.
- */
 function myWindroseMarker(data) {
 	var content = '<canvas id="id_' + data.id + '" width="50" height="50"></canvas>';
 	var icon = L.divIcon({ html: content, iconSize: [50, 50], className: 'owm-div-windrose' });
 	return L.marker([data.coord.Lat, data.coord.Lon], { icon: icon, clickable: false });
 }
 
-/**
- * Helper function for replacing leaflet-openweathermap's builtin marker by a wind rose symbol.
- * This function draws the canvas of one marker symbol once it is available in the DOM.
- */
 function myWindroseDrawCanvas(data, owm) {
 
 	var canvas = document.getElementById('id_' + data.id);
@@ -107,7 +81,6 @@ function myWindroseDrawCanvas(data, owm) {
 			speed = data.wind.speed;
 		}
 		if (typeof data.wind.deg != 'undefined') {
-			//canvas.title += ', ' + data.wind.deg + '°';
 			canvas.title += ', ' + owm._directions[(data.wind.deg / 22.5).toFixed(0)];
 			angle = data.wind.deg;
 		}
@@ -136,7 +109,6 @@ function myWindroseDrawCanvas(data, owm) {
 		ctx.lineTo(0, 25);
 		ctx.fill();
 
-		// draw inner arrow for gust
 		if (gust > 0 && gust != speed) {
 			if (gust <= 10) {
 				green = 10 * gust + 155;
@@ -151,7 +123,6 @@ function myWindroseDrawCanvas(data, owm) {
 			ctx.beginPath();
 			ctx.moveTo(-15, -25);
 			ctx.lineTo(0, -10);
-			//ctx.lineTo(15, -25);
 			ctx.lineTo(0, 25);
 			ctx.fill();
 		}
@@ -162,11 +133,6 @@ function myWindroseDrawCanvas(data, owm) {
 	}
 }
 
-/**
- * Helper function for replacing leaflet-openweathermap's builtin marker by a wind rose symbol.
- * This function is called event-driven when the layer and its markers are added. Now we can draw all marker symbols.
- * The this-context has to be the windrose layer.
- */
 function windroseAdded(e) {
 	for (var i in this._markers) {
 		var m = this._markers[i];
@@ -180,25 +146,6 @@ function windroseAdded(e) {
 	}
 }
 
-/**
- * Example function to replace leaflet-openweathermap's builtin marker.
- */
-function myOwmMarker(data) {
-	// just a Leaflet default marker
-	return L.marker([data.coord.Lat, data.coord.Lon]);
-}
-
-/**
- * Example function to replace leaflet-openweathermap's builtin popup.
- */
-function myOwmPopup(data) {
-	// just a Leaflet default popup
-	return L.popup().setContent(typeof data.name != 'undefined' ? data.name : data.id);
-}
-
-/**
- * Toggle scroll wheel behaviour.
- */
 function toggleWheel(localLang) {
 	if (map.scrollWheelZoom._enabled) {
 		map.scrollWheelZoom.disable();
@@ -211,9 +158,6 @@ function toggleWheel(localLang) {
 	}
 }
 
-/**
- * Initialize the map.
- */
 function initMap() {
 
 	var standard = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -275,24 +219,6 @@ function initMap() {
 	});
 	map.attributionControl.setPrefix("");
 
-	// map.addControl(L.languageSelector({
-	// 	languages: new Array(
-	// 		L.langObject('en', 'English', 'mapicons/en.png')
-	// 	,	L.langObject('de', 'Deutsch', 'mapicons/de.png')
-	// 	,	L.langObject('fr', 'Français', 'mapicons/fr.png')
-	// 	,	L.langObject('it', 'Italiano', 'mapicons/it.png')
-	// 	,	L.langObject('es', 'Español', 'mapicons/es.png')
-	// 	,	L.langObject('ca', 'Català', 'mapicons/catalonia.png')
-	// 	,	L.langObject('ru', 'Русский', 'mapicons/ru.png')
-	// 	,	L.langObject('nl', 'Nederlands', 'mapicons/nl.png')
-	// 	,	L.langObject('pt_br', 'Português do Brasil', 'mapicons/br.png')
-	// 	),
-	// 	callback: changeLanguage,
-	// 	initialLanguage: localLang,
-	// 	hideSelected: false,
-	// 	vertical: false
-	// }));
-
 	var baseMaps = {
 		"Street View": standard,
 		"Topographic View": topographic
@@ -317,7 +243,6 @@ function initMap() {
 	var layerControl = L.control.layers(baseMaps, overlayMaps, { collapsed: false }).addTo(map);
 	map.addControl(new L.Control.Permalink({ layers: layerControl, useAnchor: false, position: 'bottomright' }));
 
-	// patch layerControl to add some titles
 	var patch = L.DomUtil.create('div', 'owm-layercontrol-header');
 	patch.innerHTML = getI18n('layers', localLang); // 'TileLayers';
 	layerControl._form.children[2].parentNode.insertBefore(patch, layerControl._form.children[2]);
@@ -373,6 +298,12 @@ function initMap() {
 			cityarray.unshift(response[0].ReportingArea);
 			statearray.unshift(response[0].StateCode);
 			console.log(cityarray)
+
+			chart.updateSeries([{
+				name: "Air Quality Index",
+				data: aqiarray
+			  }])
+			
 
 		});
 
