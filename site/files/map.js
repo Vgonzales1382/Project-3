@@ -303,79 +303,145 @@ function initMap() {
 				data: aqiarray
 			}])
 			
-			
-		});
-
-		var options = {
-			chart: {
-				height: 350,
-				type:'donut',
-				plotOptions: {
-					pie:{
-						donut:{
-							labels:{
-								show: true,
-								total:{
+			var options = {
+				chart: {
+					height: 350,
+					type:'donut',
+					plotOptions: {
+						pie:{
+							donut:{
+								labels:{
 									show: true,
-									label: 'AQI',
-									formatter: ()=> aqiarray[0]
+									total:{
+										show: true,
+										label: 'AQI',
+										formatter: ()=> aqiarray[0]
+									}
 								}
 							}
 						}
-					}
-		
-				},
-				},
-				series: [aqiarray[0], 300 - aqiarray[0] ],
-				labels : ['AQI' , ""],
-				dataLabels: {
-					enabled: false
-				  },
-				fill: {
-					colors: [function ({ value, seriesIndex, w }) {
-						if (value < 51) {
-							return '#00e400'
-						} else if (value >= 51 && value < 101) {
-							return '#FFFF00'
-						} else if (value >= 101 && value < 151) {
-							return '#ff7e00'
-						} else if (value >= 151 && value < 201) {
-							return '#FFFFFF'
-						} else if (value >= 201 && value < 301) {
-							return '#FFFFFF'
-						} else {
-							return '#FFFFFF'
-						}
-					}],
-					dropShadow: {
-						enabled: true,
-						top: 0,
-						left: 0,
-						blur: 3,
-						opacity: 0.5
-					  },
-				},
-				legend: {
-					position: 'right',
-					offsetY: 0,
-					height: 230,
-					show : false
-				},
-				noData: {
-					text: 'Click an area on the map to load AQI data...'
-				}
 			
-			},
-			donut = new ApexCharts(
-				document.querySelector("#donut"),
-				options
-			);
-		
-			donut.render()
+					},
+					},
+					series: [aqiarray[0], 300 - aqiarray[0] ],
+					labels : ['AQI' , ""],
+					dataLabels: {
+						enabled: false
+					  },
+					fill: {
+						colors: [function ({ value, seriesIndex, w }) {
+							if (value < 51) {
+								return '#00e400'
+							} else if (value >= 51 && value < 101) {
+								return '#FFFF00'
+							} else if (value >= 101 && value < 151) {
+								return '#ff7e00'
+							} else if (value >= 151 && value < 201) {
+								return '#FFFFFF'
+							} else if (value >= 201 && value < 301) {
+								return '#FFFFFF'
+							} else {
+								return '#FFFFFF'
+							}
+						}],
+						dropShadow: {
+							enabled: true,
+							top: 0,
+							left: 0,
+							blur: 3,
+							opacity: 0.5
+						  },
+					},
+					legend: {
+						position: 'right',
+						offsetY: 0,
+						height: 230,
+						show : false
+					},
+					noData: {
+						text: 'Click an area on the map to load AQI data...'
+					}
 				
+				},
+				donut = new ApexCharts(
+					document.querySelector("#donut"),
+					options
+				);
+				
+				var options = {
+					chart: {
+						height: 350,
+						type:'donut',
+						plotOptions: {
+							pie:{
+								donut:{
+									labels:{
+										show: true,
+										total:{
+											show: true,
+											label: 'AQI',
+											formatter: ()=> aqiarray[0]
+										}
+									}
+								}
+							}
+				
+						},
+						},
+						series: [aqiarray[0], 300 - aqiarray[0] ],
+						labels : ['AQI' , ""],
+						dataLabels: {
+							enabled: false
+						  },
+						fill: {
+							colors: [function ({ value, seriesIndex, w }) {
+								if (value < 51) {
+									return '#00e400'
+								} else if (value >= 51 && value < 101) {
+									return '#FFFF00'
+								} else if (value >= 101 && value < 151) {
+									return '#ff7e00'
+								} else if (value >= 151 && value < 201) {
+									return '#FFFFFF'
+								} else if (value >= 201 && value < 301) {
+									return '#FFFFFF'
+								} else {
+									return '#FFFFFF'
+								}
+							}],
+							dropShadow: {
+								enabled: true,
+								top: 0,
+								left: 0,
+								blur: 3,
+								opacity: 0.5
+							  },
+						},
+						legend: {
+							position: 'right',
+							offsetY: 0,
+							height: 230,
+							show : false
+						},
+						noData: {
+							text: 'Click an area on the map to load AQI data...'
+						}
+					
+					},
+					donut = new ApexCharts(
+						document.querySelector("#donut"),
+						options
+					);
+				
+					
+				 	donut.render()
+				
+			
+		});
 
-
-
+		
+			
+			
 
 		d3.json(weatherurl).then(function (response) {
 

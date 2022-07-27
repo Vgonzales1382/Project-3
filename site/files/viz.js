@@ -1,5 +1,3 @@
-
-
 var options = {
     chart: {
         height: 350,
