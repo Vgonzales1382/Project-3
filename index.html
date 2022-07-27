@@ -1,166 +1,249 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Project 3 | Interactive Maps and Graphs</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="SHORTCUT ICON" href="owm.ico" />
+    <link rel="stylesheet" type="text/css" href="site/leaflet/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="leaflet-openweathermap.css" />
+    <link rel="stylesheet" type="text/css" href="site/files/map.css" />
+    <script src="site/leaflet/leaflet.js"></script>
+    <script src="site/leaflet/Permalink.js"></script>
+    <script src="site/leaflet/Permalink.Layer.js"></script>
+    <script src="site/leaflet/Permalink.Overlay.js"></script>
+    <script src="leaflet-openweathermap.js"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="leaflet/leaflet-languageselector.css" /> -->
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/5.2/examples/jumbotron/"
+    />
+    <!-- <script src="leaflet/leaflet-languageselector.js"></script> -->
+    <script src="site/files/map_i18n.js"></script>
+    <script src="site/files/map.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <link href="site/files/bootstrap.min.css" rel="stylesheet" />
 
-<head>
-	<title>Project 3 | Interactive Maps and Graphs</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="SHORTCUT ICON" HREF="owm.ico">
-	<link rel="stylesheet" type="text/css" href="site/leaflet/leaflet.css" />
-	<link rel="stylesheet" type="text/css" href="leaflet-openweathermap.css" />
-	<link rel="stylesheet" type="text/css" href="site/files/map.css" />
-	<script src="site/leaflet/leaflet.js"></script>
-	<script src="site/leaflet/Permalink.js"></script>
-	<script src="site/leaflet/Permalink.Layer.js"></script>
-	<script src="site/leaflet/Permalink.Overlay.js"></script>
-	<script src="leaflet-openweathermap.js"></script>
-	<!-- <link rel="stylesheet" type="text/css" href="leaflet/leaflet-languageselector.css" /> -->
-	<link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/jumbotron/">
-	<!-- <script src="leaflet/leaflet-languageselector.js"></script> -->
-	<script src="site/files/map_i18n.js"></script>
-	<script src="site/files/map.js"></script>
-	<script src="site/files/donutchart.js"></script>
-	<script src="https://d3js.org/d3.v5.min.js"></script>
-	<link href="site/files/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
 
-	<style>
-		.bd-placeholder-img {
-			font-size: 1.125rem;
-			text-anchor: middle;
-			-webkit-user-select: none;
-			-moz-user-select: none;
-			user-select: none;
-		}
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
 
-		@media (min-width: 768px) {
-			.bd-placeholder-img-lg {
-				font-size: 3.5rem;
-			}
-		}
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, 0.1);
+        border: solid rgba(0, 0, 0, 0.15);
+        border-width: 1px 0;
+        box-shadow: inset 0 0.5em 1.5em rgba(0, 0, 0, 0.1),
+          inset 0 0.125em 0.5em rgba(0, 0, 0, 0.15);
+      }
 
-		.b-example-divider {
-			height: 3rem;
-			background-color: rgba(0, 0, 0, .1);
-			border: solid rgba(0, 0, 0, .15);
-			border-width: 1px 0;
-			box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
-		}
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
 
-		.b-example-vr {
-			flex-shrink: 0;
-			width: 1.5rem;
-			height: 100vh;
-		}
+      .bi {
+        vertical-align: -0.125em;
+        fill: currentColor;
+      }
 
-		.bi {
-			vertical-align: -.125em;
-			fill: currentColor;
-		}
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
 
-		.nav-scroller {
-			position: relative;
-			z-index: 2;
-			height: 2.75rem;
-			overflow-y: hidden;
-		}
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+  </head>
 
-		.nav-scroller .nav {
-			display: flex;
-			flex-wrap: nowrap;
-			padding-bottom: 1rem;
-			margin-top: -1px;
-			overflow-x: auto;
-			text-align: center;
-			white-space: nowrap;
-			-webkit-overflow-scrolling: touch;
-		}
-	</style>
+  <body>
+    <main>
+      <div class="container py-4">
+        <header class="pb-3 mb-0 border-bottom">
+          <span class="fs-4"
+            >An interactive Comparison of Air Quality Across the Globe</span
+          >
+        </header>
 
+        <div class="p-0 mb-4 bg-light rounded-3" style="height: 400px">
+          <div class="container-fluid py-5" id="map">
+            <script>
+              initMap();
+            </script>
+          </div>
+        </div>
 
-</head>
+        <div class="row align-items-md-stretch mb-4">
+          <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <div id="chart"></div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="h-100 p-5 bg-light border rounded-3">
+              <div id="donut"></div>
+            </div>
+          </div>
+        </div>
 
-<body>
-
-	<main>
-		<div class="container py-4">
-			<header class="pb-3 mb-0 border-bottom">
-				<span class="fs-4">An interactive Comparison of Air Quality Across the Globe</span>
-			</header>
-
-			<div class="p-0 mb-4 bg-light rounded-3" style="height:450px;">
-				<div class="container-fluid py-5" id="map">
-					<script>
-						initMap();
-					</script>
-				</div>
-			</div>
-
-			<div class="row align-items-md-stretch mb-4">
-				<div class="col-md-6">
-					<div class="h-100 p-5 bg-light border rounded-3">
-						<div id="chart"></div>
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="h-100 p-5 bg-light border rounded-3">
-						<div id="donut"></div>
-
-					</div>
-				</div>
-			</div>
-
-			<div class="row align-items-center ">
-				
-				<table class="table table-bordered">
-					<h1 style="text-align:center;font-size:larger"><strong>AQI Basics for Ozone and Particle Pollution</strong></h1>
-					<thead>
-						<tr style="background: rgb(225, 235, 244);">
-							<th scope="col" style="text-align: center; vertical-align: text-top; width: 114px;">Daily AQI Color</th>
-							<th scope="col" style="text-align: center; vertical-align: text-top; width: 122px;">Levels of Concern</th>
-							<th scope="col" style="text-align: center; vertical-align: text-top; width: 98px;">Values of Index</th>
-							<th scope="col" style="text-align: center; vertical-align: text-top; width: 258px;">Description of Air Quality</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr style="background: rgb(0, 228, 0)">
-							<td style="text-align: center;"><strong>Green</strong></td>
-							<td id="good" style="text-align: center;"><strong>Good</strong></td>
-							<td style="text-align: center;"><strong>0 to 50</strong></td>
-							<td><strong>Air quality is satisfactory, and air pollution poses little or no risk.</strong></td>
-						</tr>
-						<tr style="background:yellow;">
-							<td style="text-align: center;"><strong>Yellow</strong></td>
-							<td id="mod" style="text-align: center;"><strong>Moderate</strong></td>
-							<td style="text-align: center;"><strong>51 to 100</strong></td>
-							<td><strong>Air quality is acceptable. However, there may be a risk for some people, particularly those who are unusually sensitive to air pollution.</strong></td>
-						</tr>
-						<tr style="background: rgb(255, 126, 0);color:white;">
-							<td style="text-align: center;"><strong>Orange</strong></td>
-							<td id="sens" style="text-align: center;"><strong>Unhealthy for Sensitive Groups</strong></td>
-							<td style="text-align: center;"><strong>101 to 150</strong></td>
-							<td><strong>Members of sensitive groups may experience health effects. The general public is less likely to be affected.</strong></td>
-						</tr>
-						<tr style="background:red;color:white;">
-							<td style="text-align: center; "><strong>Red</strong></td>
-							<td id="unh" style="text-align: center; "><strong>Unhealthy</strong></td>
-							<td style="text-align: center; "><strong>151 to 200</strong></td>
-							<td><strong>Some members of the general public may experience health effects; members of sensitive groups may experience more serious health effects.</strong></td>
-						</tr>
-						<tr style="background: rgb(143, 63, 151);color:white;">
-							<td style="text-align: center;"><strong>Purple</strong></td>
-							<td id="vunh" style="text-align: center; "><strong>Very Unhealthy</strong></td>
-							<td style="text-align: center; "><strong>201 to 300</strong></td>
-							<td><strong>Health alert: The risk of health effects is increased for everyone.</strong></td>
-						</tr>
-						<tr style="background: rgb(126, 0, 35 );color:white;">
-							<td style="text-align: center; "><strong>Maroon</strong></td>
-							<td id="haz" style="text-align: center; "><strong>Hazardous</strong></td>
-							<td style="text-align: center; "><strong>301 and higher</strong></td>
-							<td><strong>Health warning of emergency conditions: everyone is more likely to be affected.</strong></td>
-						</tr>
-					</tbody>
-				</table>
-				<!-- <table>
+        <div class="row align-items-center">
+          <table class="table table-bordered">
+            <h1 style="text-align: center; font-size: larger">
+              <strong>AQI Basics for Ozone and Particle Pollution</strong>
+            </h1>
+            <thead>
+              <tr style="background: rgb(225, 235, 244)">
+                <th
+                  scope="col"
+                  style="
+                    text-align: center;
+                    vertical-align: text-top;
+                    width: 114px;
+                  "
+                >
+                  Daily AQI Color
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    text-align: center;
+                    vertical-align: text-top;
+                    width: 122px;
+                  "
+                >
+                  Levels of Concern
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    text-align: center;
+                    vertical-align: text-top;
+                    width: 98px;
+                  "
+                >
+                  Values of Index
+                </th>
+                <th
+                  scope="col"
+                  style="
+                    text-align: center;
+                    vertical-align: text-top;
+                    width: 258px;
+                  "
+                >
+                  Description of Air Quality
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background: rgb(0, 228, 0)">
+                <td style="text-align: center"><strong>Green</strong></td>
+                <td id="good" style="text-align: center">
+                  <strong>Good</strong>
+                </td>
+                <td style="text-align: center"><strong>0 to 50</strong></td>
+                <td>
+                  <strong
+                    >Air quality is satisfactory, and air pollution poses little
+                    or no risk.</strong
+                  >
+                </td>
+              </tr>
+              <tr style="background: yellow">
+                <td style="text-align: center"><strong>Yellow</strong></td>
+                <td id="mod" style="text-align: center">
+                  <strong>Moderate</strong>
+                </td>
+                <td style="text-align: center"><strong>51 to 100</strong></td>
+                <td>
+                  <strong
+                    >Air quality is acceptable. However, there may be a risk for
+                    some people, particularly those who are unusually sensitive
+                    to air pollution.</strong
+                  >
+                </td>
+              </tr>
+              <tr style="background: rgb(255, 126, 0); color: white">
+                <td style="text-align: center"><strong>Orange</strong></td>
+                <td id="sens" style="text-align: center">
+                  <strong>Unhealthy for Sensitive Groups</strong>
+                </td>
+                <td style="text-align: center"><strong>101 to 150</strong></td>
+                <td>
+                  <strong
+                    >Members of sensitive groups may experience health effects.
+                    The general public is less likely to be affected.</strong
+                  >
+                </td>
+              </tr>
+              <tr style="background: red; color: white">
+                <td style="text-align: center"><strong>Red</strong></td>
+                <td id="unh" style="text-align: center">
+                  <strong>Unhealthy</strong>
+                </td>
+                <td style="text-align: center"><strong>151 to 200</strong></td>
+                <td>
+                  <strong
+                    >Some members of the general public may experience health
+                    effects; members of sensitive groups may experience more
+                    serious health effects.</strong
+                  >
+                </td>
+              </tr>
+              <tr style="background: rgb(143, 63, 151); color: white">
+                <td style="text-align: center"><strong>Purple</strong></td>
+                <td id="vunh" style="text-align: center">
+                  <strong>Very Unhealthy</strong>
+                </td>
+                <td style="text-align: center"><strong>201 to 300</strong></td>
+                <td>
+                  <strong
+                    >Health alert: The risk of health effects is increased for
+                    everyone.</strong
+                  >
+                </td>
+              </tr>
+              <tr style="background: rgb(126, 0, 35); color: white">
+                <td style="text-align: center"><strong>Maroon</strong></td>
+                <td id="haz" style="text-align: center">
+                  <strong>Hazardous</strong>
+                </td>
+                <td style="text-align: center">
+                  <strong>301 and higher</strong>
+                </td>
+                <td>
+                  <strong
+                    >Health warning of emergency conditions: everyone is more
+                    likely to be affected.</strong
+                  >
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <table>
 
 					<tbody>
 						<tr>
@@ -230,7 +313,7 @@
 						</tr>
 					</tbody>
 				</table> -->
-				<!-- <div class="col-md-6">
+          <!-- <div class="col-md-6">
 					<div class="h-100 p-5 bg-light border rounded-3" id="chart">
 					</div>
 				</div>
@@ -239,23 +322,15 @@
 						<h2>Light Box</h2>
 					</div>
 				</div> -->
-			</div>
+        </div>
 
+        <footer class="pt-3 mt-4 text-muted border-top">&copy; 2022</footer>
+      </div>
+    </main>
 
-			<footer class="pt-3 mt-4 text-muted border-top">
-				&copy; 2022
-			</footer>
-		</div>
-	</main>
-
-
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-	<script src="site/files/clickdata.js"></script>
-	<script src="site/files/viz.js"></script>
-
-
-
-</body>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="site/files/clickdata.js"></script>
+    <script src="site/files/viz.js"></script>
+  </body>
 </html>

@@ -297,17 +297,75 @@ function initMap() {
 			aqiarray.unshift(response[0].AQI);
 			cityarray.unshift(response[0].ReportingArea);
 			statearray.unshift(response[0].StateCode);
-			console.log(cityarray)
-
+			
 			chart.updateSeries([{
 				name: "Air Quality Index",
 				data: aqiarray
-			  }])
-			
+			}])
+
+			//Donut
+			var options = {
+				chart: {
+					height: 350,
+					type:'donut',
+					},
+					series : [aqiarray[0] , 300 - aqiarray[0]],
+					labels : ['AQI' , ""],
+					dataLabels: {
+						enabled: false
+					  },
+					fill: {
+						colors: [function ({ value, seriesIndex, w }) {
+							if (value < 51) {
+								return '#00e400'
+							} else if (value >= 51 && value < 101) {
+								return '#FFFF00'
+							} else if (value >= 101 && value < 151) {
+								return '#ff7e00'
+							} else if (value >= 151 && value < 201) {
+								return '#FFFFFF'
+							} else if (value >= 201 && value < 301) {
+								return '#FFFFFF'
+							} else {
+								return '#FFFFFF'
+							}
+						}],
+						dropShadow: {
+							enabled: true,
+							top: 0,
+							left: 0,
+							blur: 3,
+							opacity: 0.5
+						  },
+					},
+					responsive: [{
+						breakpoint: 480,
+						options: {
+						chart: {
+						width: 200
+						},
+						legend: {
+						show: false
+						}
+						}
+					}],
+					legend: {
+						position: 'right',
+						offsetY: 0,
+						height: 230,
+						show : false
+					}
+				
+				}
+				
+				var donut = new ApexCharts(
+					document.querySelector("#donut"),
+					options
+				);
+				
+				donut.render();
 
 		});
-
-
 
 		d3.json(weatherurl).then(function (response) {
 
