@@ -270,7 +270,7 @@ function initMap() {
 
 	var aqiurl = 'https://www.airnowapi.org/';
 	var aqi_current_url = 'aq/observation/latLong/current/?format=application/json';
-	var aqidist = '&distance=25';
+	var aqidist = '&distance=100';
 	var aqi_key = '&API_KEY=C039AA9D-04F5-4025-8A80-7C5C6792AA34';
 
 	var weatherbaseurl = 'https://api.openweathermap.org/data/2.5/weather'
@@ -321,3 +321,8 @@ function initMap() {
 	});
 
 }
+
+const icon = `https://openweathermap.org/img/wn/${
+  weather[0]["icon"]
+}@2x.png`;
+

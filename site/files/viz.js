@@ -5,11 +5,18 @@ var options = {
     },
     dataLabels: {
         enabled: true,
-        position: "top"
+        position: "top",
+        dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 3,
+            opacity: 0.25
+          }
     },
     fill: {
         colors: [function ({ value, seriesIndex, w }) {
-            if (value > 50) {
+            if (value < 51) {
                 return '#00e400'
             } else if (value >= 51 && value < 101) {
                 return '#FFFF00'
@@ -23,6 +30,13 @@ var options = {
                 return '#7e0023'
             }
         }],
+        dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 3,
+            opacity: 0.5
+          },
     },
     series: [],
     title: {
@@ -35,7 +49,7 @@ var options = {
         }
     },
     noData: {
-        text: 'Loading...'
+        text: 'Click an area on the map to load AQI data...'
     },
     xaxis: {
         categories: cityarray,
