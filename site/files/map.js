@@ -298,20 +298,13 @@ function initMap() {
 			cityarray.unshift(response[0].ReportingArea);
 			statearray.unshift(response[0].StateCode);
 			
-			
-
 			chart.updateSeries([{
 				name: "Air Quality Index",
 				data: aqiarray
-			  }])
+			}])
 
-			  
-
-
-
-
-			  //Donut
-			  var options = {
+			//Donut
+			var options = {
 				chart: {
 					height: 350,
 					type:'donut',
@@ -348,20 +341,20 @@ function initMap() {
 					responsive: [{
 						breakpoint: 480,
 						options: {
-						  chart: {
-							width: 200
-						  },
-						  legend: {
-							show: false
-						  }
+						chart: {
+						width: 200
+						},
+						legend: {
+						show: false
 						}
-					  }],
-					  legend: {
+						}
+					}],
+					legend: {
 						position: 'right',
 						offsetY: 0,
 						height: 230,
 						show : false
-					  }
+					}
 				
 				}
 				
@@ -373,8 +366,6 @@ function initMap() {
 				donut.render();
 
 		});
-
-
 
 		d3.json(weatherurl).then(function (response) {
 
